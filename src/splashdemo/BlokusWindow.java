@@ -4,6 +4,8 @@ package splashdemo;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
+
 
 class BlokusWindow extends JFrame
    {
@@ -78,13 +80,56 @@ class BlokusWindow extends JFrame
                {
                   try
                   {
+                     System.out.println(turn);
+                     if (turn ==0 ||turn ==1){
+                         
+                     
                      board.placePiece(players[turn].pieces.get(pieceIndex), selected.x - BlokusPiece.SHAPE_SIZE / 2, 
                      selected.y - BlokusPiece.SHAPE_SIZE / 2, players[turn].firstMove);
                      drawBoard();
                      players[turn].pieces.remove(pieceIndex);
                      players[turn].firstMove = false;
                      players[turn].canPlay = !players[turn].pieces.isEmpty();
+                     
                      startNewTurn();
+                     }
+                     else if (turn==2 ||turn==3)
+                     {
+                        //int randomNum = ThreadLocalRandom.current().nextInt(0, 21 + 1);
+                        
+                         outerloop:
+                        for(int x = 0; x<= 19; x++)
+                        {
+                            for(int y= 0;y <= 19; y++)
+                            {
+                                try{
+                                    
+                                
+                                board.placePiece(players[turn].pieces.get(0) , x-BlokusPiece.SHAPE_SIZE/2, y-BlokusPiece.SHAPE_SIZE/2,
+                                players[turn].firstMove);
+                                drawBoard();
+                                players[turn].pieces.remove(pieceIndex);
+                                players[turn].firstMove = false;
+                                players[turn].canPlay = !players[turn].pieces.isEmpty();
+                                 
+                                break outerloop;
+                                
+                                
+                                }
+                                
+                                catch (IllegalMoveException ex)
+                                {
+                                     
+                                }
+                                
+                            }
+                            
+                        }
+                        startNewTurn();
+                        
+                        
+                       
+                     }
                   }
                   catch (IllegalMoveException ex)
                   {
@@ -102,13 +147,17 @@ class BlokusWindow extends JFrame
             
             public void mouseMoved(MouseEvent e)
             {
+                if (turn ==0 ||turn ==1){
+               
                Point p = board.getCoordinates(e.getPoint(), BlokusBoard.CONSOLE_RESOLUTION);
                if (!p.equals(selected))
                {
                   selected = p;
+                  
                   board.overlay(players[turn].pieces.get(pieceIndex), selected.x, selected.y);
                   drawBoard();
                }
+                }
             }
             
             public void mouseWheelMoved(MouseWheelEvent e)
@@ -260,6 +309,7 @@ class BlokusWindow extends JFrame
       //to flip turns
       private void startNewTurn()
       {
+         System.out.println("hi");
          turn++;
          turn %= 4;
          
@@ -274,19 +324,24 @@ class BlokusWindow extends JFrame
             startNewTurn();
             return;
          }
-         piecesPanel.removeAll(); 
-         for (int i = 0; i < players[turn].pieces.size(); i++)
-         {
-            BlokusPiecePanel pieceLabel = 
-               new BlokusPiecePanel(i, players[turn].pieces.get(i), BlokusPiece.DEFAULT_RESOLUTION);
-            pieceLabel.addMouseListener(new PieceLabelClickListener());
-            pieceLabel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-            piecesPanel.add(pieceLabel);
-         }  
-         pieceIndex = 0;
-         drawBorder();
-         piecesPanel.repaint();  
-         pack();
+         piecesPanel.removeAll();
+         
+        
+             
+         
+            for (int i = 0; i < players[turn].pieces.size(); i++)
+            {
+                BlokusPiecePanel pieceLabel = 
+                new BlokusPiecePanel(i, players[turn].pieces.get(i), BlokusPiece.DEFAULT_RESOLUTION);
+                pieceLabel.addMouseListener(new PieceLabelClickListener());
+                pieceLabel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+                piecesPanel.add(pieceLabel);
+            }  
+            pieceIndex = 0;
+            drawBorder();
+            piecesPanel.repaint();  
+            pack();
+        
       }
       
       //check for all player's canPlay values
