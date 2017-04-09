@@ -135,13 +135,13 @@ class BlokusWindow extends JFrame
          
          mainPanel = new JPanel();
          piecesPanel = new JPanel();
-          //peice panel
+          //piece panel
          piecesPanel.setLayout(new BoxLayout(piecesPanel, BoxLayout.PAGE_AXIS));
          
-         //side peices panel
-         JScrollPane peicePanel = new JScrollPane(piecesPanel);
-         peicePanel.getVerticalScrollBar().setUnitIncrement(BlokusPiece.DEFAULT_RESOLUTION);
-         peicePanel.setPreferredSize(new Dimension(BlokusPiece.DEFAULT_RESOLUTION -80, BlokusBoard.CONSOLE_RESOLUTION - 27));
+         //side piece panel
+         JScrollPane piecePanel = new JScrollPane(piecesPanel);
+         piecePanel.getVerticalScrollBar().setUnitIncrement(BlokusPiece.DEFAULT_RESOLUTION);
+         piecePanel.setPreferredSize(new Dimension(BlokusPiece.DEFAULT_RESOLUTION -80, BlokusBoard.CONSOLE_RESOLUTION - 27));
 
          //quit button
          exit = new JButton("I QUIT :<");
@@ -150,6 +150,8 @@ class BlokusWindow extends JFrame
          
          sidePanel = new JPanel();
          sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
+         
+         
          
          
          boardPanel = new JPanel();
@@ -164,7 +166,7 @@ class BlokusWindow extends JFrame
          //add grid
          boardPanel.add(grid);
          //add side peice panel
-         sidePanel.add(peicePanel);
+         sidePanel.add(piecePanel);
          //add exit button
          sidePanel.add(exit);
          mainPanel.add(sidePanel);
