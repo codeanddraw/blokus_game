@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JFrame;
-
 public class Welcome extends javax.swing.JFrame {
 
    
