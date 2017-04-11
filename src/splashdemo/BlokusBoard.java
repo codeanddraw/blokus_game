@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class BlokusBoard
 {
@@ -14,7 +17,15 @@ public class BlokusBoard
       return new Point(pixel.x /(consoleResolution / BOARD_SIZE), pixel.y / (consoleResolution/ BOARD_SIZE));
    }
    
-   
+   public void saveGrid(ObjectOutputStream outStream) throws IOException {
+        outStream.writeObject(grid);
+    }
+    
+    public void loadGrid(ObjectInputStream inStream) throws IOException, ClassNotFoundException {
+        grid = (int[][]) inStream.readObject();
+    }
+
+
    //check if the first move is valid
    public boolean isValidMove(BlokusPiece bp, int xOffset, int yOffset, boolean firstMove) throws IllegalMoveException
    {
@@ -100,6 +111,7 @@ public class BlokusBoard
    {
       return gridLay(CONSOLE_RESOLUTION);
    }
+   
    
    public BufferedImage gridLay(int size)
    {
@@ -200,7 +212,7 @@ public class BlokusBoard
    public static final String CORNER = "Attention! Pieces must be connected to at least one other piece of the the same color by the corner.";
    
    //define grid
-   private final int[][] grid;
+   private int[][] grid;
    private final int[][] overlay;
    
    //game board

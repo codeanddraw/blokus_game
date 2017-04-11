@@ -4,6 +4,12 @@ package splashdemo;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -41,6 +47,28 @@ class BlokusWindow extends JFrame
          setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          initializeGUI();
          startNewTurn();
+      }
+      // Saving and loading
+       private void saveGame(String fileName) throws FileNotFoundException, IOException {
+          FileOutputStream outFile = new FileOutputStream(fileName);
+          ObjectOutputStream outStream = new ObjectOutputStream(outFile);
+          for (BlokusPlayer player : players) {
+              outStream.writeObject(player);
+          }
+          board.saveGrid(outStream);
+          
+          
+      }
+      
+      private void loadGame(String fileName) throws FileNotFoundException, IOException, ClassNotFoundException {
+          FileInputStream inFile = new FileInputStream(fileName);
+          ObjectInputStream inStream = new ObjectInputStream(inFile);
+          players[0] = (BlokusPlayer) inStream.readObject();
+          players[1] = (BlokusPlayer) inStream.readObject();
+          players[2] = (BlokusPlayer) inStream.readObject();
+          players[3] = (BlokusPlayer) inStream.readObject();
+          board.loadGrid(inStream);
+          
       }
       
       //initialize GUI
