@@ -12,10 +12,12 @@ class BlokusPlayer implements Serializable
    public LinkedList<BlokusPiece> pieces;
    public boolean firstMove = true;
    public boolean canPlay = true;
+   Integer score;
    
    public BlokusPlayer(int color)
    {
       
+      this.score = 0;
       int[][][] shapes = BlokusPiece.getAllShapes();
       
       pieces = new LinkedList<>();
@@ -27,7 +29,7 @@ class BlokusPlayer implements Serializable
    
    public int getScore()
    {
-     return 0;
+     return score;
    }
    
    

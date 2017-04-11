@@ -4,36 +4,35 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+
 public class Welcome extends javax.swing.JFrame {
 
-   
     public Welcome() {
         initComponents();
-        
- 
- 
+
     }
     int x = 0, y = 500;
+
     public void paint(Graphics g) {
-    super.paint(g);
-    Graphics2D g2 = (Graphics2D) g;
-    Font font = new Font("",Font.ITALIC,25);
-    g2.setFont(font);
-    g2.setColor(Color.white);
-    g2.drawString("Copyright @cs205.Ltd: Nisha, David, Bill",x,y);
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        Font font = new Font("", Font.ITALIC, 25);
+        g2.setFont(font);
+        g2.setColor(Color.white);
+        g2.drawString("Copyright @cs205.Ltd: Nisha, David, Bill", x, y);
 
-    try {
-     Thread.sleep(500);
-   } catch(Exception ex) {
-   }
-    x+=10;
-    if(x>this.getWidth()) {
-      x=0;
-   }
-    repaint();
-   }
-
+        try {
+            Thread.sleep(500);
+        } catch (Exception ex) {
+        }
+        x += 10;
+        if (x > this.getWidth()) {
+            x = 0;
+        }
+        repaint();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,6 +54,7 @@ public class Welcome extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -114,6 +114,15 @@ public class Welcome extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 470));
 
         jMenu1.setText("File");
+
+        jMenuItem1.setText("Save...");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -125,12 +134,22 @@ public class Welcome extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       BlokusWindow run = new BlokusWindow();
+        BlokusWindow run = new BlokusWindow();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        JFileChooser saveDialogue = new JFileChooser();
+        int fileChooserResult = saveDialogue.showSaveDialog(this);
+        if (fileChooserResult == JFileChooser.APPROVE_OPTION) {
+
+        } else if (fileChooserResult == JFileChooser.CANCEL_OPTION) {
+            System.out.println("Operation cancelled");
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,11 +187,11 @@ public class Welcome extends javax.swing.JFrame {
          */
         JFrame jf = new JFrame("WEST");
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        jf.setSize(700,200);
+
+        jf.setSize(700, 200);
         jf.add(new Welcome());
         jf.setVisible(true);
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
@@ -193,5 +212,6 @@ public class Welcome extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }

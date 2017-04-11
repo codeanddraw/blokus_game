@@ -48,6 +48,7 @@ class BlokusWindow extends JFrame
          initializeGUI();
          startNewTurn();
       }
+      
       // Saving and loading
        private void saveGame(String fileName) throws FileNotFoundException, IOException {
           FileOutputStream outFile = new FileOutputStream(fileName);
@@ -56,6 +57,7 @@ class BlokusWindow extends JFrame
               outStream.writeObject(player);
           }
           board.saveGrid(outStream);
+          outStream.writeInt(turn);
           
           
       }
@@ -68,6 +70,7 @@ class BlokusWindow extends JFrame
           players[2] = (BlokusPlayer) inStream.readObject();
           players[3] = (BlokusPlayer) inStream.readObject();
           board.loadGrid(inStream);
+          this.turn = inStream.readInt();
           
       }
       
@@ -251,6 +254,7 @@ class BlokusWindow extends JFrame
          getContentPane().add(mainPanel);
          setVisible(true);
       }
+      
       
       private void rotateClockwise()
       {
