@@ -9,8 +9,11 @@ import javax.swing.JFrame;
 
 public class Welcome extends javax.swing.JFrame {
 
+    String fileName;
+
     public Welcome() {
         initComponents();
+        fileName = "";
 
     }
     int x = 0, y = 500;
@@ -145,7 +148,8 @@ public class Welcome extends javax.swing.JFrame {
         JFileChooser saveDialogue = new JFileChooser();
         int fileChooserResult = saveDialogue.showSaveDialog(this);
         if (fileChooserResult == JFileChooser.APPROVE_OPTION) {
-
+            String saveFile = saveDialogue.getSelectedFile().getPath();
+            
         } else if (fileChooserResult == JFileChooser.CANCEL_OPTION) {
             System.out.println("Operation cancelled");
         }

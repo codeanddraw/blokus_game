@@ -34,6 +34,8 @@ class BlokusWindow extends JFrame {
     private JMenuItem save;
     private JMenuItem load;
 
+    private boolean gameIsSaved;
+
     //constructor
     public BlokusWindow() {
         super("Blokus");
@@ -45,6 +47,7 @@ class BlokusWindow extends JFrame {
         players[1] = new BlokusPlayer(BlokusBoard.GREEN);
         players[2] = new BlokusPlayer(BlokusBoard.RED);
         players[3] = new BlokusPlayer(BlokusBoard.YELLOW);
+        gameIsSaved = false;
 
         //to exit the game window 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,15 +67,21 @@ class BlokusWindow extends JFrame {
 
     }
 
-    private void loadGame(String fileName) throws FileNotFoundException, IOException, ClassNotFoundException {
-        FileInputStream inFile = new FileInputStream(fileName);
-        ObjectInputStream inStream = new ObjectInputStream(inFile);
-        players[0] = (BlokusPlayer) inStream.readObject();
-        players[1] = (BlokusPlayer) inStream.readObject();
-        players[2] = (BlokusPlayer) inStream.readObject();
-        players[3] = (BlokusPlayer) inStream.readObject();
-        board.loadGrid(inStream);
-        this.turn = inStream.readInt();
+    private void loadGame(String fileName) throws IOException {
+        try {
+            FileInputStream inFile = new FileInputStream(fileName);
+            ObjectInputStream inStream = new ObjectInputStream(inFile);
+            players[0] = (BlokusPlayer) inStream.readObject();
+            players[1] = (BlokusPlayer) inStream.readObject();
+            players[2] = (BlokusPlayer) inStream.readObject();
+            players[3] = (BlokusPlayer) inStream.readObject();
+            board.loadGrid(inStream);
+            this.turn = inStream.readInt();
+        } catch (ClassNotFoundException ex) {
+            System.out.println("This shouldn't happen, but ClassNotFound exception thrown: " + ex.getMessage());
+        } catch (FileNotFoundException ex) {
+            System.out.println("Shouldn't happen, but FileNotFound exception thrown: " + ex.getMessage());
+        }
 
     }
 
@@ -210,11 +219,18 @@ class BlokusWindow extends JFrame {
             }
         });
         load = new javax.swing.JMenuItem();
+        load.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadMenuItemActionPerformed(evt);
+            }
+        });
 
-        fileMenu.setText("File...");
+        fileMenu.setText("File");
         save.setText("Save...");
+        load.setText("Load...");
 
         fileMenu.add(save);
+        fileMenu.add(load);
 
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
@@ -244,10 +260,39 @@ class BlokusWindow extends JFrame {
         JFileChooser saveDialogue = new JFileChooser();
         int fileChooserResult = saveDialogue.showSaveDialog(this);
         if (fileChooserResult == JFileChooser.APPROVE_OPTION) {
-            String saveFile = saveDialogue.getSelectedFile().getPath();
+            System.out.println("Saving file");
+            String saveFile = saveDialogue.getSelectedFile().getPath() + ".ser";
+            System.out.println("saveFile is " + saveFile);
+            try {
+                this.saveGame(saveFile);
+            } catch (IOException ex) {
+                System.out.print("Unable to save to file: ");
+                System.out.print(ex.getMessage());
+            } finally {
+                this.gameIsSaved = true;
+                System.out.println("File hopefully saved!");
+            }
 
         } else if (fileChooserResult == JFileChooser.CANCEL_OPTION) {
             System.out.println("Operation cancelled");
+        }
+    }
+
+    private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        JFileChooser openDialogue = new JFileChooser();
+        int fileChooserResult = openDialogue.showOpenDialog(this);
+        if (fileChooserResult == JFileChooser.APPROVE_OPTION) {
+            System.out.println("Opening file");
+            String openFile = openDialogue.getSelectedFile().getPath();// + ".ser";
+            System.out.println("openFile is " + openFile);
+            try {
+                this.loadGame(openFile);
+            } catch (IOException ex) {
+                System.out.print("Unable to open file: ");
+                System.out.print(ex.getMessage());
+            }
+        } else if (fileChooserResult == JFileChooser.CANCEL_OPTION) {
+            System.out.println("Load operation cancelled");
         }
     }
 
@@ -326,6 +371,7 @@ class BlokusWindow extends JFrame {
         System.out.println("hi");
         turn++;
         turn %= 4;
+        gameIsSaved = false;
 
         if (isGameOver()) {
             gameOver();
