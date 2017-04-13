@@ -289,7 +289,7 @@ class BlokusWindow extends JFrame {
                 this.loadGame(openFile);
             } catch (IOException ex) {
                 System.out.print("Unable to open file: ");
-                System.out.print(ex.getMessage());
+                System.out.print(ex.getCause());
             }
         } else if (fileChooserResult == JFileChooser.CANCEL_OPTION) {
             System.out.println("Load operation cancelled");
