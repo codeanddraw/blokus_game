@@ -4,12 +4,65 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 public class BlokusBoard
 {
+    public static final int NONE = 0;
+   public static final int BLUE = 1;
+   public static final int GREEN = 2;
+   public static final int RED = 3;
+   public static final int YELLOW= 4;
+   public static final int BOARD_SIZE = 20;
+   public static final int CONSOLE_RESOLUTION = 600;
+   
+   //rid layout (colour)  
+   public static final Color BOARDCOLOR = Color.BLACK;
+   public static final Color GRIDLINECOLOR = Color.RED;
+   
+   //game rules
+   public static final String OFFBOARD = "Oops pieces cannot go out of board. Try again!";
+   public static final String ADJACENCY = "No no no! Same coloured pieces can't share edges.";
+   public static final String OVERLAP = "Watch out! Pieces cannot overlap.";
+   public static final String START = "First piece? Can only begin at the player's corner.";
+   public static final String CORNER = "Attention! Pieces must be connected to at least one other piece of the the same color by the corner.";
+   
+   //define grid
+   private final int[][] grid;
+   private final int[][] overlay;
+   
+   //game board
+   public BlokusBoard()
+   {
+      grid = new int[BOARD_SIZE][BOARD_SIZE];
+      overlay = new int[BOARD_SIZE][BOARD_SIZE];
+      reset(grid);
+      reset(overlay);
+    }
+   
+   //to show coloured corner points
+   private Point getCorner(int color)
+   {
+      switch (color)
+      { 
+         case BLUE: return new Point(0, 0);
+         case YELLOW: return new Point(0, BOARD_SIZE - 1);
+         case RED: return new Point(BOARD_SIZE - 1, BOARD_SIZE - 1);
+         case GREEN: return new Point(BOARD_SIZE - 1, 0);
+         default: throw new IllegalArgumentException();
+      }
+   }
+   
+   public static Color getColor(int color)
+   {
+      switch (color)
+      {
+         case BLUE: return Color.BLUE;
+         case RED: return Color.RED;
+         case YELLOW: return Color.YELLOW;
+         case GREEN: return new Color(0, 128, 0);
+         default: return BOARDCOLOR;
+      }
+   }
    
    
    public Point getCoordinates(Point pixel, int consoleResolution)
@@ -17,15 +70,7 @@ public class BlokusBoard
       return new Point(pixel.x /(consoleResolution / BOARD_SIZE), pixel.y / (consoleResolution/ BOARD_SIZE));
    }
    
-   public void saveGrid(ObjectOutputStream outStream) throws IOException {
-        outStream.writeObject(grid);
-    }
-    
-    public void loadGrid(ObjectInputStream inStream) throws IOException, ClassNotFoundException {
-        grid = (int[][]) inStream.readObject();
-    }
-
-
+   
    //check if the first move is valid
    public boolean isValidMove(BlokusPiece bp, int xOffset, int yOffset, boolean firstMove) throws IllegalMoveException
    {
@@ -57,7 +102,7 @@ public class BlokusBoard
             }
             else
             {
-               if (value == BlokusPiece.PIECE) throw new IllegalMoveException(OFF_BOARD);
+               if (value == BlokusPiece.PIECE) throw new IllegalMoveException(OFFBOARD);
             }
          }
       }
@@ -112,7 +157,6 @@ public class BlokusBoard
       return gridLay(CONSOLE_RESOLUTION);
    }
    
-   
    public BufferedImage gridLay(int size)
    {
       BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
@@ -129,7 +173,7 @@ public class BlokusBoard
                g.setColor(blend(g.getColor(), getColor(overlay[x][y]), 0.1f));
             }
             g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-            g.setColor(GRID_LINE_COLOR);
+            g.setColor(GRIDLINECOLOR);
             g.drawRect(x * cellSize, y * cellSize, cellSize, cellSize);
             
             if (grid[x][y] == NONE)
@@ -192,60 +236,5 @@ public class BlokusBoard
    {
       return (x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE);
    }  
- public static final int NONE = 0;
-   public static final int BLUE = 1;
-   public static final int GREEN = 2;
-   public static final int RED = 3;
-   public static final int YELLOW= 4;
-   public static final int BOARD_SIZE = 20;
-   public static final int CONSOLE_RESOLUTION = 600;
    
-   //rid layout (colour)  
-   public static final Color BOARD_COLOR = Color.BLACK;
-   public static final Color GRID_LINE_COLOR = Color.RED;
-   
-   //game rules
-   public static final String OFF_BOARD = "Oops pieces cannot go out of board. Try again!";
-   public static final String ADJACENCY = "No no no! Same coloured pieces can't share edges.";
-   public static final String OVERLAP = "Watch out! Pieces cannot overlap.";
-   public static final String START = "First piece? Can only begin at the player's corner.";
-   public static final String CORNER = "Attention! Pieces must be connected to at least one other piece of the the same color by the corner.";
-   
-   //define grid
-   private int[][] grid;
-   private final int[][] overlay;
-   
-   //game board
-   public BlokusBoard()
-   {
-      grid = new int[BOARD_SIZE][BOARD_SIZE];
-      overlay = new int[BOARD_SIZE][BOARD_SIZE];
-      reset(grid);
-      reset(overlay);
-    }
-   
-   //to show coloured corner points
-   private Point getCorner(int color)
-   {
-      switch (color)
-      { 
-         case BLUE: return new Point(0, 0);
-         case YELLOW: return new Point(0, BOARD_SIZE - 1);
-         case RED: return new Point(BOARD_SIZE - 1, BOARD_SIZE - 1);
-         case GREEN: return new Point(BOARD_SIZE - 1, 0);
-         default: throw new IllegalArgumentException();
-      }
-   }
-   
-   public static Color getColor(int color)
-   {
-      switch (color)
-      {
-         case BLUE: return Color.BLUE;
-         case RED: return Color.RED;
-         case YELLOW: return Color.YELLOW;
-         case GREEN: return new Color(0, 128, 0);
-         default: return BOARD_COLOR;
-      }
-   }
 }

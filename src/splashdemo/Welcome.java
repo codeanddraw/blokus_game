@@ -1,41 +1,43 @@
 package splashdemo;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import javax.swing.JFileChooser;
+import java.io.File;
 import javax.swing.JFrame;
 
 public class Welcome extends javax.swing.JFrame {
 
-    String fileName;
-
+   
     public Welcome() {
         initComponents();
-        fileName = "";
-
+        
+ 
+ 
     }
-    int x = 0, y = 500;
-
+    static JFrame jf = new JFrame("Game");
+    int x = 0, y = 510;
     public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D) g;
-        Font font = new Font("", Font.ITALIC, 25);
-        g2.setFont(font);
-        g2.setColor(Color.white);
-        g2.drawString("Copyright @cs205.Ltd: Nisha, David, Bill", x, y);
+    super.paint(g);
+    Graphics2D g2 = (Graphics2D) g;
+    Font font = new Font("Courier",Font.BOLD+Font.PLAIN,14);
+    g2.setFont(font);
+    g2.setColor(Color.white);
+    g2.drawString("Copyright @cs205.Ltd: Nisha, David, Bill",x,y);
 
-        try {
-            Thread.sleep(500);
-        } catch (Exception ex) {
-        }
-        x += 10;
-        if (x > this.getWidth()) {
-            x = 0;
-        }
-        repaint();
-    }
+    try {
+     Thread.sleep(500);
+   } catch(Exception ex) {
+   }
+    x+=10;
+    if(x>this.getWidth()) {
+      x=0;
+   }
+    repaint();
+   }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,7 +59,6 @@ public class Welcome extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -70,7 +71,7 @@ public class Welcome extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 130, 120));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 130, 120));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/splashdemo/b3.png"))); // NOI18N
         jButton2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -79,53 +80,54 @@ public class Welcome extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 90, 90));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 90, 90));
 
         jButton3.setForeground(new java.awt.Color(0, 0, 51));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/splashdemo/b4.png"))); // NOI18N
         jButton3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 140, 40));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 140, 40));
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 102));
         jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Tired? Go Home");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 350, 120, 30));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 370, 120, 30));
 
         jLabel3.setBackground(new java.awt.Color(0, 0, 102));
         jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Masterminds");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 350, 130, 30));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 370, 130, 30));
 
         jLabel4.setBackground(new java.awt.Color(0, 0, 102));
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Lets GoGaming!");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 70, 110, 20));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 110, 20));
 
         jLabel5.setBackground(new java.awt.Color(0, 0, 102));
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Confused? Read the rules");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, -1, 40));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, -1, 40));
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/splashdemo/b2.png"))); // NOI18N
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, 80, 90));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/splashdemo/pic1.jpeg"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 470));
-
-        jMenu1.setText("File");
-
-        jMenuItem1.setText("Save...");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jButton4ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 80, 90));
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/splashdemo/pic1.jpeg"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 800, 520));
+
+        jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -137,23 +139,45 @@ public class Welcome extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        BlokusWindow run = new BlokusWindow();
+       BlokusWindow run = new BlokusWindow();
+       this.setVisible(false);
+       //jf.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+     
+	  try {
+                //to open a pdf of rules
+		File pdfFile = new File("C:/Users/Ayushi_chaubey/Desktop/soft final project/selected imgs/Blokus.pdf");
+		if (pdfFile.exists()) {
+
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(pdfFile);
+			} else {
+				System.out.println("Awt Desktop is not supported!");
+			}
+
+		} else {
+			System.out.println("File doesn't exist!");
+		}
+
+		System.out.println("Done");
+
+	  } catch (Exception ex) {
+		ex.printStackTrace();
+	  }
+
+	
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        JFileChooser saveDialogue = new JFileChooser();
-        int fileChooserResult = saveDialogue.showSaveDialog(this);
-        if (fileChooserResult == JFileChooser.APPROVE_OPTION) {
-            String saveFile = saveDialogue.getSelectedFile().getPath();
-            
-        } else if (fileChooserResult == JFileChooser.CANCEL_OPTION) {
-            System.out.println("Operation cancelled");
-        }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        new Masterminds().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,13 +213,13 @@ public class Welcome extends javax.swing.JFrame {
         /*
          * Create and display the form
          */
-        JFrame jf = new JFrame("WEST");
+        
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        jf.setSize(700, 200);
+        
+        jf.setSize(700,200);
         jf.add(new Welcome());
         jf.setVisible(true);
-
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
@@ -216,6 +240,5 @@ public class Welcome extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }
