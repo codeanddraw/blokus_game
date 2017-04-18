@@ -4,20 +4,17 @@ package splashdemo;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 import java.util.LinkedList;
 
-class BlokusPlayer implements Serializable
+class BlokusPlayer
 {
    public LinkedList<BlokusPiece> pieces;
    public boolean firstMove = true;
    public boolean canPlay = true;
-   Integer score;
    
    public BlokusPlayer(int color)
    {
       
-      this.score = 0;
       int[][][] shapes = BlokusPiece.getAllShapes();
       
       pieces = new LinkedList<>();
@@ -29,15 +26,12 @@ class BlokusPlayer implements Serializable
    
    public int getScore()
    {
-     return score;
+     return 0;
    }
-   
-   
-   
 }
 
 
-public class BlokusPiece implements Serializable
+public class BlokusPiece
 {
    public static final int SHAPE_SIZE = 7;
    public static final int PIECE =3;

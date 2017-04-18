@@ -8,8 +8,8 @@ class IllegalMoveException extends Exception
          super();
       }
       
-      public IllegalMoveException(String message)
+      public IllegalMoveException(String dispMessage)
       {
-         super(message);
+         super(dispMessage);
       }
    }
