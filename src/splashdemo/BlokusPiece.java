@@ -4,9 +4,10 @@ package splashdemo;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.LinkedList;
 
-class BlokusPlayer
+class BlokusPlayer implements Serializable
 {
    public LinkedList<BlokusPiece> pieces;
    public boolean firstMove = true;
@@ -31,7 +32,7 @@ class BlokusPlayer
 }
 
 
-public class BlokusPiece
+public class BlokusPiece implements Serializable
 {
    public static final int SHAPE_SIZE = 7;
    public static final int PIECE =3;
