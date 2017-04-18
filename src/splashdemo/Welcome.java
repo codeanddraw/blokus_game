@@ -10,34 +10,31 @@ import javax.swing.JFrame;
 
 public class Welcome extends javax.swing.JFrame {
 
-   
     public Welcome() {
         initComponents();
-        
- 
- 
+
     }
     static JFrame jf = new JFrame("Game");
     int x = 0, y = 510;
+
     public void paint(Graphics g) {
-    super.paint(g);
-    Graphics2D g2 = (Graphics2D) g;
-    Font font = new Font("Courier",Font.BOLD+Font.PLAIN,14);
-    g2.setFont(font);
-    g2.setColor(Color.white);
-    g2.drawString("Copyright @cs205.Ltd: Nisha, David, Bill",x,y);
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        Font font = new Font("Courier", Font.BOLD + Font.PLAIN, 14);
+        g2.setFont(font);
+        g2.setColor(Color.white);
+        g2.drawString("Copyright @cs205.Ltd: Nisha, David, Bill", x, y);
 
-    try {
-     Thread.sleep(500);
-   } catch(Exception ex) {
-   }
-    x+=10;
-    if(x>this.getWidth()) {
-      x=0;
-   }
-    repaint();
-   }
-
+        try {
+            Thread.sleep(500);
+        } catch (Exception ex) {
+        }
+        x += 10;
+        if (x > this.getWidth()) {
+            x = 0;
+        }
+        repaint();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -139,35 +136,35 @@ public class Welcome extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       BlokusWindow run = new BlokusWindow();
-       this.setVisible(false);
-       //jf.setVisible(true);
+        BlokusWindow run = new BlokusWindow();
+        this.setVisible(false);
+        //jf.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     
-	  try {
-                //to open a pdf of rules
-		File pdfFile = new File("C:/Users/Ayushi_chaubey/Desktop/soft final project/selected imgs/Blokus.pdf");
-		if (pdfFile.exists()) {
 
-			if (Desktop.isDesktopSupported()) {
-				Desktop.getDesktop().open(pdfFile);
-			} else {
-				System.out.println("Awt Desktop is not supported!");
-			}
+        try {
+            //to open a pdf of rules
+            File pdfFile = new File("C:/Users/Ayushi_chaubey/Desktop/soft final project/selected imgs/Blokus.pdf");
+            if (pdfFile.exists()) {
 
-		} else {
-			System.out.println("File doesn't exist!");
-		}
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(pdfFile);
+                } else {
+                    System.out.println("Awt Desktop is not supported!");
+                }
 
-		System.out.println("Done");
+            } else {
+                System.out.println("File doesn't exist!");
+            }
 
-	  } catch (Exception ex) {
-		ex.printStackTrace();
-	  }
+            System.out.println("Done");
 
-	
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -213,13 +210,12 @@ public class Welcome extends javax.swing.JFrame {
         /*
          * Create and display the form
          */
-        
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        jf.setSize(700,200);
+
+        jf.setSize(700, 200);
         jf.add(new Welcome());
         jf.setVisible(true);
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
