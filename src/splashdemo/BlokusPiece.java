@@ -6,27 +6,6 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-class BlokusPlayer implements Serializable {
-
-    public LinkedList<BlokusPiece> pieces;
-    public boolean firstMove = true;
-    public boolean canPlay = true;
-
-    public BlokusPlayer(int color) {
-
-        int[][][] shapes = BlokusPiece.getAllShapes();
-
-        pieces = new LinkedList<>();
-        for (int[][] shape : shapes) {
-            pieces.add(new BlokusPiece(shape, color));
-        }
-
-    }
-
-    public int getScore() {
-        return 0;
-    }
-}
 
 public class BlokusPiece implements Serializable {
 
