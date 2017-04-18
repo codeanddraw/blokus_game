@@ -12,7 +12,7 @@ class Masterminds extends javax.swing.JFrame {
      */
     public Masterminds() {
         initComponents();
-          
+
     }
 
     /**
@@ -174,16 +174,16 @@ class Masterminds extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       Welcome obj= new Welcome();
-       obj.setVisible(true);
-       this.setVisible(false);
+        Welcome obj = new Welcome();
+        obj.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
-  
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
