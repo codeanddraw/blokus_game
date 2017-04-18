@@ -4,8 +4,12 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class BlokusBoard
+public class BlokusBoard implements Serializable
 {
     public static final int NONE = 0;
    public static final int BLUE = 1;
@@ -27,7 +31,7 @@ public class BlokusBoard
    public static final String CORNER = "Attention! Pieces must be connected to at least one other piece of the the same color by the corner.";
    
    //define grid
-   private final int[][] grid;
+   private int[][] grid;
    private final int[][] overlay;
    
    //game board
@@ -236,5 +240,14 @@ public class BlokusBoard
    {
       return (x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE);
    }  
+
+    void saveGrid(ObjectOutputStream outStream)  throws IOException {
+        outStream.writeObject(grid);
+    }
+    
+    public void loadGrid(ObjectInputStream inStream) throws IOException, ClassNotFoundException {
+        grid = (int[][]) inStream.readObject();
+    }
+
    
 }
