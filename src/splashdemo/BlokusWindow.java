@@ -359,10 +359,12 @@ class BlokusWindow extends JFrame {
     //to select peice type
     private class PieceLabelClickListener implements MouseListener {
         public void mouseClicked(MouseEvent e) {
+            if (turn == 0 || turn == 2){
             BlokusPiecePanel bp = (BlokusPiecePanel) e.getComponent();
             clearBorder();
             pieceIndex = bp.pieceIndex;
             drawBorder();
+            }
         }
 
         //need to override abstract methods
