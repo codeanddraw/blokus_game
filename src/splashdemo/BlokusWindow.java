@@ -19,7 +19,7 @@ class BlokusWindow extends JFrame {
     private final BlokusBoard board;
     private final BlokusPlayer[] players;
     private int turn = -1;
-    private int maxBlocks = 21;
+    private int maxBlocks;
     private int pieceIndex;
     private Point selected;
 
@@ -126,7 +126,8 @@ class BlokusWindow extends JFrame {
                     flipPiece();
                 } else {
                     try {
-                        System.out.println(turn);
+                        
+                        
                         if (turn == 0 || turn == 2) {
                             board.placePiece(players[turn].pieces.get(pieceIndex), selected.x - BlokusPiece.PIECESIZE / 2,
                                     selected.y - BlokusPiece.PIECESIZE / 2, players[turn].firstMove);
@@ -136,30 +137,42 @@ class BlokusWindow extends JFrame {
                             players[turn].canPlay = !players[turn].pieces.isEmpty();
                             startNewTurn();
                         } else if (turn == 1 || turn == 3) {
-                            int randomNum = ThreadLocalRandom.current().nextInt(0, maxBlocks);
+                            
                             outerloop:
-                            for (int x = 0; x <= 19; x++) {
-                                for (int y = 0; y <= 19; y++) {
-                                    try {
-                                        board.placePiece(players[turn].pieces.get(randomNum), x - BlokusPiece.PIECESIZE/ 2, y - BlokusPiece.PIECESIZE/ 2,
+                            for (int j=0; j <= 21; j++){
+                                 maxBlocks=players[turn].pieces.size();
+                                 int randomNum = ThreadLocalRandom.current().nextInt(0, maxBlocks);   
+                                for (int x = 0; x <= 19; x++) {
+                                    for (int y = 0; y <= 19; y++) {
+                                        try {
+                                            board.placePiece(players[turn].pieces.get(randomNum), x - BlokusPiece.PIECESIZE/ 2, y - BlokusPiece.PIECESIZE/ 2,
                                                 players[turn].firstMove);
-                                        drawBoard();
-                                        players[turn].pieces.remove(randomNum);
-                                        players[turn].firstMove = false;
-                                        players[turn].canPlay = !players[turn].pieces.isEmpty();
-                                        break outerloop;
-                                    } catch (IllegalMoveException ex) {
+                                            drawBoard();
+                                            players[turn].pieces.remove(randomNum);
+                                            players[turn].firstMove = false;
+                                            players[turn].canPlay = !players[turn].pieces.isEmpty();
+                                            
+                                            
+                                      
+                                            break outerloop;
+                                            
+                                    }   catch (IllegalMoveException ex) {
                                     }
                                 }
                             }
-                            if (turn == 4) {
-                                maxBlocks--;
+                                if(j== 20)
+                                            {
+                                                players[turn].canPlay = false;
+                                            }
                             }
+                            
+                
                             startNewTurn();
                         }
                     } catch (IllegalMoveException ex) {
                         displayMessage(ex.getMessage(), "Wrong Move!");
                     }
+                  
                 }
             }
 
