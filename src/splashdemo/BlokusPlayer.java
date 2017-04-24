@@ -1,35 +1,38 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package splashdemo;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-
 /**
- *
- * @author David Marks
- */
+* <h1>BlokusPlayer methods</h1>
+* @author  Nisha Chaube
+*/
 class BlokusPlayer implements Serializable {
-
     public LinkedList<BlokusPiece> pieces;
     public boolean firstMove = true;
     public boolean canPlay = true;
 
+    /**
+   * This is BlokusPlayer constructor which loads pieces of different players as their turn comes.
+     * @param color
+   */
     public BlokusPlayer(int color) {
-
-        int[][][] shapes = BlokusPiece.getAllShapes();
-
+        int[][][] pieceShapes = BlokusPiece.getAllPieceShapes();
         pieces = new LinkedList<>();
-        for (int[][] shape : shapes) {
+        for (int[][]shape : pieceShapes) {
             pieces.add(new BlokusPiece(shape, color));
         }
-
     }
 
-    public int getScore() {
-        return 0;
+    /**
+   * This is calculateScore method which calculates scores of both players.
+     * @return totalScores
+   */
+    public int calculateScore() {
+      int totalScores = 0;
+      for (BlokusPiece blokuspiece : pieces)
+      {
+         totalScores = totalScores + blokuspiece.getScores();
+      }
+      return totalScores;
     }
 }
