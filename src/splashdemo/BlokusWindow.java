@@ -221,7 +221,12 @@ class BlokusWindow extends JFrame {
         class rotateListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
                 if (turn == 0 || turn == 2) {
-                rotateClockwise();
+                try {
+                        rotateClockwise();
+                } catch (NullPointerException npe) {
+    // It's fine if findUser throws a NPE
+                }    
+                
                 }
             }
             
@@ -231,7 +236,13 @@ class BlokusWindow extends JFrame {
         class flipListener implements ActionListener {
             public void actionPerformed(ActionEvent event) {
                 if (turn == 0 || turn == 2) {
-                flipPiece();
+                    try {
+                        flipPiece();
+                    } catch (NullPointerException npe) {
+    // It's fine if findUser throws a NPE
+                }    
+                    
+                
                 }
             }
             
@@ -357,6 +368,8 @@ class BlokusWindow extends JFrame {
     }
 
     private void rotateCounterClockwise() {
+        
+        
         players[turn].pieces.get(pieceIndex).rotateCounterClockwise();
         board.overlay(players[turn].pieces.get(pieceIndex), selected.x, selected.y);
         drawBoard();
