@@ -4,10 +4,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/temp/Dropbox/Course%20Documents/Software%20Engineering/Ok/BlokusCS205-/src/splashdemo/BlokusPiecePanel.java</file>
-            <file>file:/Users/temp/Dropbox/Course%20Documents/Software%20Engineering/Ok/BlokusCS205-/src/splashdemo/BlokusWindow.java</file>
-            <file>file:/Users/temp/Dropbox/Course%20Documents/Software%20Engineering/Ok/BlokusCS205-/src/splashdemo/IllegalMoveException.java</file>
-            <file>file:/Users/temp/Dropbox/Course%20Documents/Software%20Engineering/Ok/BlokusCS205-/src/splashdemo/BlokusPiece.java</file>
+            <file>file:/Users/billynupp/GitHub/BlokusCS205-/src/splashdemo/LoadGame.java</file>
+            <file>file:/Users/billynupp/GitHub/BlokusCS205-/src/splashdemo/BlokusPiecePanel.java</file>
+            <file>file:/Users/billynupp/GitHub/BlokusCS205-/src/splashdemo/BlokusPiece.java</file>
+            <file>file:/Users/billynupp/GitHub/BlokusCS205-/src/splashdemo/Welcome.java</file>
+            <file>file:/Users/billynupp/GitHub/BlokusCS205-/src/splashdemo/BlokusBoard.java</file>
+            <file>file:/Users/billynupp/GitHub/BlokusCS205-/src/splashdemo/BlokusWindow.java</file>
+            <file>file:/Users/billynupp/GitHub/BlokusCS205-/src/splashdemo/IllegalMoveException.java</file>
+            <file>file:/Users/billynupp/GitHub/BlokusCS205-/src/splashdemo/BlokusPlayer.java</file>
         </group>
     </open-files>
 </project-private>

@@ -31,7 +31,8 @@ class BlokusWindow extends JFrame {
     private JLabel grid;
     private ImageIcon boardImage;
     private JButton exit;
-
+    private JButton rotate;
+    private JButton flip;
     //variables for the menu bar
     private JMenuBar menuBar;
     private JMenu fileMenu;
@@ -103,7 +104,7 @@ class BlokusWindow extends JFrame {
    * This is the initializeGUI method which initializes the GUI by implementing various listeners.
    */
     private void initializeGUI() {
-        class BoardClickListener implements MouseListener, MouseMotionListener, MouseWheelListener {
+        class BoardClickListener implements MouseListener, MouseMotionListener{
             //overridden abstract methods
             public void mousePressed(MouseEvent e) {
             }
@@ -119,32 +120,41 @@ class BlokusWindow extends JFrame {
             public void mouseDragged(MouseEvent e) {
 
             }
+            
+            public void mouseWheelMoved(MouseEvent e) {
+            }
+            
 
             //flipping turns on mouse clicks
             public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    flipPiece();
-                } else {
+                
+                  
                     try {
                         
-                        
+                        //if player turn
                         if (turn == 0 || turn == 2) {
+                            //place block
                             board.placePiece(players[turn].pieces.get(pieceIndex), selected.x - BlokusPiece.PIECESIZE / 2,
                                     selected.y - BlokusPiece.PIECESIZE / 2, players[turn].firstMove);
                             drawBoard();
+                            //remove piece
                             players[turn].pieces.remove(pieceIndex);
                             players[turn].firstMove = false;
+                            //if you use all your blocks quit
                             players[turn].canPlay = !players[turn].pieces.isEmpty();
                             startNewTurn();
+                            //if computer turn
                         } else if (turn == 1 || turn == 3) {
                             
                             outerloop:
+                            //try 21 different random blocks
                             for (int j=0; j <= 21; j++){
                                  maxBlocks=players[turn].pieces.size();
                                  int randomNum = ThreadLocalRandom.current().nextInt(0, maxBlocks);   
                                 for (int x = 0; x <= 19; x++) {
                                     for (int y = 0; y <= 19; y++) {
                                         try {
+                                            // try and place block on every square
                                             board.placePiece(players[turn].pieces.get(randomNum), x - BlokusPiece.PIECESIZE/ 2, y - BlokusPiece.PIECESIZE/ 2,
                                                 players[turn].firstMove);
                                             drawBoard();
@@ -160,6 +170,7 @@ class BlokusWindow extends JFrame {
                                     }
                                 }
                             }
+                                // if computer has no move then quit
                                 if(j== 20)
                                             {
                                                 players[turn].canPlay = false;
@@ -173,7 +184,7 @@ class BlokusWindow extends JFrame {
                         displayMessage(ex.getMessage(), "Wrong Move!");
                     }
                   
-                }
+                
             }
 
             public void mouseExited(MouseEvent e) {
@@ -197,13 +208,7 @@ class BlokusWindow extends JFrame {
             * This is the mouseWheelMoved method which rotates the piece clockwise or counterclockwise.
               * @param e
             */
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                if (e.getWheelRotation() > 0) {
-                    rotateClockwise();
-                } else {
-                    rotateCounterClockwise();
-                }
-            }
+            
         }
 
         class exitListener implements ActionListener {
@@ -212,13 +217,35 @@ class BlokusWindow extends JFrame {
                 startNewTurn();
             }
         }
+        
+        class rotateListener implements ActionListener {
+            public void actionPerformed(ActionEvent event) {
+                if (turn == 0 || turn == 2) {
+                rotateClockwise();
+                }
+            }
+            
+        
+        }
+        
+        class flipListener implements ActionListener {
+            public void actionPerformed(ActionEvent event) {
+                if (turn == 0 || turn == 2) {
+                flipPiece();
+                }
+            }
+            
+        
+        }
 
         mainPanel = new JPanel();
         piecesPanel = new JPanel();
         sidePanel = new JPanel();
         JScrollPane piecePanel = new JScrollPane(piecesPanel);
         //quit button for player
-        exit = new JButton("I QUIT :<");
+        exit = new JButton("Give Up");
+        rotate = new JButton("Rotate");
+        flip =new JButton("Flip");
   
         piecesPanel.setLayout(new BoxLayout(piecesPanel, BoxLayout.PAGE_AXIS));        
         piecePanel.getVerticalScrollBar().setUnitIncrement(BlokusPiece.DEFAULTRESOLUTION);
@@ -226,6 +253,12 @@ class BlokusWindow extends JFrame {
 
         exit.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
         exit.addActionListener(new exitListener());
+        
+        rotate.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
+        rotate.addActionListener(new rotateListener());
+        
+        flip.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
+        flip.addActionListener(new flipListener());
 
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
         //menus
@@ -261,7 +294,7 @@ class BlokusWindow extends JFrame {
         BoardClickListener bcl = new BoardClickListener();
         grid.addMouseListener(bcl);
         grid.addMouseMotionListener(bcl);
-        grid.addMouseWheelListener(bcl);
+        
 
         //add grid
         boardPanel.add(grid);
@@ -269,6 +302,8 @@ class BlokusWindow extends JFrame {
         sidePanel.add(piecePanel);
         //add exit button
         sidePanel.add(exit);
+        sidePanel.add(rotate);
+        sidePanel.add(flip);
         mainPanel.add(sidePanel);
         mainPanel.add(boardPanel);
         getContentPane().add(mainPanel);
@@ -383,6 +418,10 @@ class BlokusWindow extends JFrame {
         public void mouseExited(MouseEvent e) {
 
         }
+        
+        public void mouseWheelMoved(MouseEvent e) {
+            }
+            
     }
 
     //to flip turns
