@@ -234,7 +234,7 @@ class BlokusWindow extends JFrame {
                         drawBoard();
 
                         //remove piece
-                        players[turn].pieces.remove(pieceIndex);
+                        players[turn].piecesPlayed.add(players[turn].pieces.remove(pieceIndex));
                         players[turn].firstMove = false;
                         //if you use all your blocks quit
                         players[turn].canPlay = !players[turn].pieces.isEmpty();
@@ -254,6 +254,7 @@ class BlokusWindow extends JFrame {
                                         board.placePiece(players[turn].pieces.get(randomNum), x - BlokusPiece.PIECESIZE / 2, y - BlokusPiece.PIECESIZE / 2,
                                                 players[turn].firstMove);
                                         drawBoard();
+                                        players[turn].piecesPlayed.add(players[turn].pieces.remove(randomNum));
                                         players[turn].pieces.remove(randomNum);
                                         players[turn].firstMove = false;
                                         players[turn].canPlay = !players[turn].pieces.isEmpty();
@@ -302,7 +303,6 @@ class BlokusWindow extends JFrame {
                 if (isPlayerTurn()) {
                     players[turn].canPlay = false;
 
-                    
                 }
             }
         }
