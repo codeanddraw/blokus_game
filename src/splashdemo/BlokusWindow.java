@@ -226,6 +226,7 @@ class BlokusWindow extends JFrame {
                             System.out.println("piece is null");
 
                         }
+
                         int selx = selected.x - BlokusPiece.PIECESIZE / 2; // THIS IS CAUSING EXCEPTION
                         int sely = selected.y - BlokusPiece.PIECESIZE / 2;
                         board.placePiece(players[turn].pieces.get(pieceIndex), selected.x - BlokusPiece.PIECESIZE / 2,
@@ -484,9 +485,9 @@ class BlokusWindow extends JFrame {
         JFileChooser saveDialogue = new JFileChooser();
         int fileChooserResult = saveDialogue.showSaveDialog(this);
         if (fileChooserResult == JFileChooser.APPROVE_OPTION) {
-            System.out.println("Saving file");
+            //System.out.println("Saving file");
             String saveFile = saveDialogue.getSelectedFile().getPath() + ".ser";
-            System.out.println("saveFile is " + saveFile);
+            ///System.out.println("saveFile is " + saveFile);
             try {
                 this.saveGame(saveFile);
             } catch (IOException ex) {
@@ -494,7 +495,7 @@ class BlokusWindow extends JFrame {
                 System.out.print(ex.getMessage());
             } finally {
                 this.gameIsSaved = true;
-                System.out.println("File hopefully saved!");
+                //System.out.println("File hopefully saved!");
             }
 
         } else if (fileChooserResult == JFileChooser.CANCEL_OPTION) {
@@ -511,17 +512,29 @@ class BlokusWindow extends JFrame {
         JFileChooser openDialogue = new JFileChooser();
         int fileChooserResult = openDialogue.showOpenDialog(this);
         if (fileChooserResult == JFileChooser.APPROVE_OPTION) {
-            System.out.println("Opening file");
+            //System.out.println("Opening file");
             String openFile = openDialogue.getSelectedFile().getPath();// + ".ser";
-            System.out.println("openFile is " + openFile);
+            //System.out.println("openFile is " + openFile);
             this.loadGame(openFile);
         } else if (fileChooserResult == JFileChooser.CANCEL_OPTION) {
-            System.out.println("Load operation cancelled");
+            //System.out.println("Load operation cancelled");
         }
     }
 
     private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        System.exit(0);
+        SaveBeforeQuitConfirmationDialogue quitConfirmation = new SaveBeforeQuitConfirmationDialogue(this, true);
+        int result = quitConfirmation.showDialog();
+        switch (result) {
+            case 2:
+                saveMenuItemActionPerformed(evt);
+                System.exit(0);
+                break;
+            case 1:
+                System.exit(0);
+                break;
+            case 0:
+                System.out.println("lol");
+        }
     }
 
     /**
@@ -656,7 +669,7 @@ class BlokusWindow extends JFrame {
             return true;
         }
         for (int i = 0; i < 4; i++) {
-            
+
             if (players[i].canPlay) {
                 return false;
             }

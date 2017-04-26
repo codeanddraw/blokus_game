@@ -23,25 +23,25 @@ public class Welcome extends javax.swing.JFrame {
         initComponents();
     }
     static JFrame jf = new JFrame("Game");
-    int x = 0, y = 510;
+    int x = 30, y = 510;
 
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
-        Font font = new Font("Courier", Font.BOLD + Font.PLAIN, 14);
+        Font font = new Font("Avenir Next", Font.BOLD + Font.PLAIN, 16);
         g2.setFont(font);
         g2.setColor(Color.white);
-        g2.drawString("Copyright @cs205.Ltd: Nisha, David, Bill", x, y);
-
-        try {
-            Thread.sleep(500); // Probably causing lag
-        } catch (Exception ex) {
-        }
-        x += 10;
-        if (x > this.getWidth()) {
-            x = 0;
-        }
-        repaint();
+        g2.drawString("Copyright cs205.2017: Nisha, David, Bill", x, y);
+//
+//        try {
+//            Thread.sleep(500); // Probably causing lag
+//        } catch (Exception ex) {
+//        }
+//        x += 10;
+//        if (x > this.getWidth()) {
+//            x = 0;
+//        }
+//        repaint();
     }
 
     /**
@@ -67,6 +67,7 @@ public class Welcome extends javax.swing.JFrame {
         loadMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         startGameButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/splashdemo/b1.png"))); // NOI18N
