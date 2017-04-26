@@ -226,9 +226,6 @@ class BlokusWindow extends JFrame {
                             System.out.println("piece is null");
 
                         }
-
-                        int selx = selected.x - BlokusPiece.PIECESIZE / 2; // THIS IS CAUSING EXCEPTION
-                        int sely = selected.y - BlokusPiece.PIECESIZE / 2;
                         board.placePiece(players[turn].pieces.get(pieceIndex), selected.x - BlokusPiece.PIECESIZE / 2,
                                 selected.y - BlokusPiece.PIECESIZE / 2, players[turn].firstMove);
                         drawBoard();
