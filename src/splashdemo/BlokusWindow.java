@@ -300,9 +300,9 @@ class BlokusWindow extends JFrame {
 
             public void actionPerformed(ActionEvent event) {
                 if (isPlayerTurn()) {
-                    //players[turn].canPlay = false;
+                    players[turn].canPlay = false;
 
-                    startNewTurn();
+                    
                 }
             }
         }
@@ -364,7 +364,7 @@ class BlokusWindow extends JFrame {
         rotateRight = new JButton("⟳");
 
         flip = new JButton("Flip");
-        exit = new JButton("End Turn");
+        exit = new JButton("Give Up");
 
         exit.setPreferredSize(
                 new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
