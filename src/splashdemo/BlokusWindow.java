@@ -48,6 +48,7 @@ class BlokusWindow extends JFrame {
     private JMenu fileMenu;
     private JMenuItem save;
     private JMenuItem load;
+    private JMenuItem quit;
 
     private boolean gameIsSaved;
 
@@ -73,7 +74,6 @@ class BlokusWindow extends JFrame {
     public BlokusWindow(String fileName) {
 
         super("Blokus");
-        System.out.println("test");
         board = new BlokusBoard();
         players = new BlokusPlayer[4];
         loadGame(fileName);
@@ -139,6 +139,14 @@ class BlokusWindow extends JFrame {
 
     }
 
+    private boolean isPlayerTurn() {
+        return (turn == 0 || turn == 2);
+    }
+
+    private boolean isCPUTurn() {
+        return (turn == 1 || turn == 3);
+    }
+
     /**
      * This is the initializeGUI method which initializes the GUI by
      * implementing various listeners.
@@ -153,12 +161,14 @@ class BlokusWindow extends JFrame {
             }
 
             /**
-             * If a key is pressed while the window is in focus, rotate or flip piece.
+             * If a key is pressed while the window is in focus, rotate or flip
+             * piece.
+             *
              * @param e key event representing key pressed
              */
             @Override
             public void keyPressed(KeyEvent e) {
-                if (turn == 0 || turn == 2) {
+                if (isPlayerTurn()) {
                     int keyCode = e.getKeyCode();
                     if (keyCode == KeyEvent.VK_LEFT) {
                         rotateCounterClockwise();
@@ -203,8 +213,11 @@ class BlokusWindow extends JFrame {
                 try {
 
                     //if player turn
-                    if (turn == 0 || turn == 2) {
+                    if (isPlayerTurn()) {
                         //place block
+                        /*
+                        NOTE: NullPointerExceptions seem to originate inconsistently in this block.
+                         */
                         if (board == null) {
                             System.out.println("board is null");
                         }
@@ -218,6 +231,7 @@ class BlokusWindow extends JFrame {
                         board.placePiece(players[turn].pieces.get(pieceIndex), selected.x - BlokusPiece.PIECESIZE / 2,
                                 selected.y - BlokusPiece.PIECESIZE / 2, players[turn].firstMove);
                         drawBoard();
+
                         //remove piece
                         players[turn].pieces.remove(pieceIndex);
                         players[turn].firstMove = false;
@@ -225,7 +239,7 @@ class BlokusWindow extends JFrame {
                         players[turn].canPlay = !players[turn].pieces.isEmpty();
                         startNewTurn();
                         //if computer turn
-                    } else if (turn == 1 || turn == 3) {
+                    } else if (isCPUTurn()) {
 
                         outerloop:
                         //try 21 different random blocks
@@ -270,7 +284,7 @@ class BlokusWindow extends JFrame {
             }
 
             public void mouseMoved(MouseEvent e) {
-                if (turn == 0 || turn == 2) {
+                if (isPlayerTurn()) {
                     Point p = board.getCoordinates(e.getPoint(), BlokusBoard.CONSOLERESOLUTION);
                     if (!p.equals(selected)) {
                         selected = p;
@@ -279,27 +293,23 @@ class BlokusWindow extends JFrame {
                     }
                 }
             }
-
-            /**
-             * This is the mouseWheelMoved method which rotates the piece
-             * clockwise or counterclockwise.
-             *
-             * @param e
-             */
         }
 
         class exitListener implements ActionListener {
 
             public void actionPerformed(ActionEvent event) {
-                players[turn].canPlay = false;
-                startNewTurn();
+                if (isPlayerTurn()) {
+                    //players[turn].canPlay = false;
+
+                    startNewTurn();
+                }
             }
         }
 
         class rotateLeftListener implements ActionListener {
 
             public void actionPerformed(ActionEvent event) {
-                if (turn == 0 || turn == 2) {
+                if (isPlayerTurn()) {
                     try {
                         rotateClockwise();
                     } catch (NullPointerException npe) {
@@ -346,45 +356,63 @@ class BlokusWindow extends JFrame {
         piecesPanel = new JPanel();
         sidePanel = new JPanel();
         JScrollPane piecePanel = new JScrollPane(piecesPanel);
-        //quit button for player
-        exit = new JButton("Give Up");
+
         rotateButtons = new JPanel(new GridLayout(1, 2));
         flipAndGiveUpButtons = new JPanel(new GridLayout(1, 2));
         rotateLeft = new JButton("⟲");
         rotateRight = new JButton("⟳");
 
         flip = new JButton("Flip");
+        exit = new JButton("End Turn");
 
-        exit.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
-        exit.addActionListener(new exitListener());
+        exit.setPreferredSize(
+                new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
+        exit.addActionListener(
+                new exitListener());
 
-        rotateLeft.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 200));
-        rotateLeft.addActionListener(new rotateLeftListener());
+        rotateLeft.setPreferredSize(
+                new Dimension(BlokusPiece.DEFAULTRESOLUTION, 200));
+        rotateLeft.addActionListener(
+                new rotateLeftListener());
 
-        rotateRight.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
-        rotateRight.addActionListener(new rotateRightListener());
+        rotateRight.setPreferredSize(
+                new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
+        rotateRight.addActionListener(
+                new rotateRightListener());
 
-        rotateButtons.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
-        flipAndGiveUpButtons.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
+        rotateButtons.setPreferredSize(
+                new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
+        flipAndGiveUpButtons.setPreferredSize(
+                new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
 
-        piecesPanel.setLayout(new BoxLayout(piecesPanel, BoxLayout.PAGE_AXIS));
-        piecePanel.getVerticalScrollBar().setUnitIncrement(BlokusPiece.DEFAULTRESOLUTION);
-        piecePanel.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION - 80, BlokusBoard.CONSOLERESOLUTION - 27));
+        piecesPanel.setLayout(
+                new BoxLayout(piecesPanel, BoxLayout.PAGE_AXIS));
+        piecePanel.getVerticalScrollBar()
+                .setUnitIncrement(BlokusPiece.DEFAULTRESOLUTION);
+        piecePanel.setPreferredSize(
+                new Dimension(BlokusPiece.DEFAULTRESOLUTION - 80, BlokusBoard.CONSOLERESOLUTION - 27));
 
-        flip.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
-        flip.addActionListener(new flipListener());
+        flip.setPreferredSize(
+                new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
+        flip.addActionListener(
+                new flipListener());
 
-        sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
-        sidePanel.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION + 21, BlokusBoard.CONSOLERESOLUTION));
+        sidePanel.setLayout(
+                new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
+        sidePanel.setPreferredSize(
+                new Dimension(BlokusPiece.DEFAULTRESOLUTION + 21, BlokusBoard.CONSOLERESOLUTION));
         //menus
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         save = new javax.swing.JMenuItem();
+
         save.addActionListener(new java.awt.event.ActionListener() {
+
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMenuItemActionPerformed(evt);
             }
-        });
+        }
+        );
         load = new javax.swing.JMenuItem();
         load.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -392,15 +420,25 @@ class BlokusWindow extends JFrame {
             }
         });
 
+        quit = new javax.swing.JMenuItem();
+        quit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitMenuItemActionPerformed(evt);
+            }
+        });
+
         fileMenu.setText("File");
         save.setText("Save Current Game");
         load.setText("Load Previous Game");
+        quit.setText("Quit");
 
         save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
         load.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
+        quit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, 0));
 
         fileMenu.add(save);
         fileMenu.add(load);
+        fileMenu.add(quit);
 
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
@@ -411,7 +449,7 @@ class BlokusWindow extends JFrame {
         grid = new JLabel(boardImage);
         BoardClickListener bcl = new BoardClickListener();
         BoardKeyListener bkl = new BoardKeyListener();
-        
+
         grid.addMouseListener(bcl);
         grid.addMouseMotionListener(bcl);
         this.addKeyListener(bkl);
@@ -482,6 +520,10 @@ class BlokusWindow extends JFrame {
         }
     }
 
+    private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        System.exit(0);
+    }
+
     /**
      * Rotate piece clockwise.
      */
@@ -531,6 +573,7 @@ class BlokusWindow extends JFrame {
     //display dialogue boxes 
     private void displayMessage(String message, String title) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     //to select peice type
@@ -567,11 +610,11 @@ class BlokusWindow extends JFrame {
 
     }
 
-    //to flip turns
+//to flip turns
     private void startNewTurn() {
         turn++;
         turn %= 4;
-        if (hasPlayerQuit()) {
+        if (isGameOver()) {
             gameFinish();
         }
         if (!players[turn].canPlay) {
@@ -587,22 +630,33 @@ class BlokusWindow extends JFrame {
             piecesPanel.add(pieceLabel);
         }
         pieceIndex = 0;
-        if (turn == 1 || turn == 3) {
-            clearBorder();
-        } else {
+        if (isPlayerTurn()) {
             drawBorder();
+            exit.setEnabled(true);
+            flip.setEnabled(true);
+            rotateLeft.setEnabled(true);
+            rotateRight.setEnabled(true);
+
+        } else {
+            clearBorder();
+            exit.setEnabled(false);
+            flip.setEnabled(false);
+            rotateLeft.setEnabled(false);
+            rotateRight.setEnabled(false);
+
         }
         piecesPanel.repaint();
         pack();
     }
 
     //check for all player's canPlay values
-    private boolean hasPlayerQuit() {
+    private boolean isGameOver() {
+        // Comment out the three lines below to restore original functionality, this is to help the game end faster for testing
+        if (players[1].canPlay == false && players[3].canPlay == false) {
+            return true;
+        }
         for (int i = 0; i < 4; i++) {
-            if (players[i] == null) {
-                System.out.println("i is" + i);
-                System.out.println("alright");
-            }
+            
             if (players[i].canPlay) {
                 return false;
             }
@@ -624,22 +678,23 @@ class BlokusWindow extends JFrame {
     private void gameFinish() {
         StringBuilder stringContent = new StringBuilder();
         stringContent.append("***************Score Sheet*************\n");
-        stringContent.append("Computer Player 1 :");
+        stringContent.append("Blue: ");
         stringContent.append(players[0].calculateScore());
         stringContent.append("\n");
 
-        stringContent.append("Human Player 2   :");
+        stringContent.append("Green: ");
         stringContent.append(players[1].calculateScore());
         stringContent.append("\n");
 
-        stringContent.append("Computer Player 3 :");
+        stringContent.append("Red: ");
         stringContent.append(players[2].calculateScore());
         stringContent.append("\n");
 
-        stringContent.append("Human Player 4    :");
+        stringContent.append("Yellow: ");
         stringContent.append(players[3].calculateScore());
         stringContent.append("\n");
-        ImageIcon icon = new ImageIcon(BlokusWindow.class.getResource("d2.gif"));
+        ImageIcon icon = new ImageIcon(BlokusWindow.class
+                .getResource("d2.gif"));
         JOptionPane.showMessageDialog(this, stringContent.toString(), "Game Over Now", JOptionPane.INFORMATION_MESSAGE, icon);
         System.exit(0);
     }
