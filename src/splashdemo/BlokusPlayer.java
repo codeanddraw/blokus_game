@@ -35,6 +35,8 @@ class BlokusPlayer implements Serializable {
       {
          totalScores = totalScores + blokuspiece.getScores();
       }
+      //there are total 89 cells  
+      totalScores = 89 - totalScores; 
       return totalScores;
     }
 }
