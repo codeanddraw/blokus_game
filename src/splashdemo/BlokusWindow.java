@@ -300,7 +300,7 @@ class BlokusWindow extends JFrame {
 
             public void actionPerformed(ActionEvent event) {
                 if (isPlayerTurn()) {
-                   // players[turn].canPlay = false;
+                    players[turn].canPlay = false;
                     startNewTurn();
                     
                 }
@@ -312,7 +312,7 @@ class BlokusWindow extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 if (isPlayerTurn()) {
                     try {
-                        rotateClockwise();
+                        rotateCounterClockwise();
                     } catch (NullPointerException npe) {
                         // It's fine if findUser throws a NPE
                     }
@@ -327,7 +327,7 @@ class BlokusWindow extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 if (turn == 0 || turn == 2) {
                     try {
-                        rotateCounterClockwise();
+                        rotateClockwise();
                     } catch (NullPointerException npe) {
                         // It's fine if findUser throws a NPE
                     }
@@ -364,7 +364,7 @@ class BlokusWindow extends JFrame {
         rotateRight = new JButton("⟳");
 
         flip = new JButton("Flip");
-        exit = new JButton("End Turn");
+        exit = new JButton("Can't Play");
 
         exit.setPreferredSize(
                 new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
@@ -665,7 +665,7 @@ class BlokusWindow extends JFrame {
     //check for all player's canPlay values
     private boolean isGameOver() {
         // Comment out the three lines below to restore original functionality, this is to help the game end faster for testing
-        if (players[1].canPlay == false && players[3].canPlay == false) {
+        if (players[0].canPlay == false && players[1].canPlay == false && players[2].canPlay == false &&players[3].canPlay == false) {
             return true;
         }
         for (int i = 0; i < 4; i++) {
