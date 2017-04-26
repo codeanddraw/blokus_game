@@ -234,7 +234,7 @@ class BlokusWindow extends JFrame {
                         drawBoard();
 
                         //remove piece
-                        players[turn].pieces.remove(pieceIndex);
+                        players[turn].piecesPlayed.add(players[turn].pieces.remove(pieceIndex));
                         players[turn].firstMove = false;
                         //if you use all your blocks quit
                         players[turn].canPlay = !players[turn].pieces.isEmpty();
@@ -254,7 +254,7 @@ class BlokusWindow extends JFrame {
                                         board.placePiece(players[turn].pieces.get(randomNum), x - BlokusPiece.PIECESIZE / 2, y - BlokusPiece.PIECESIZE / 2,
                                                 players[turn].firstMove);
                                         drawBoard();
-                                        players[turn].pieces.remove(randomNum);
+                                        players[turn].piecesPlayed.add(players[turn].pieces.remove(randomNum));
                                         players[turn].firstMove = false;
                                         players[turn].canPlay = !players[turn].pieces.isEmpty();
 
@@ -302,7 +302,7 @@ class BlokusWindow extends JFrame {
                 if (isPlayerTurn()) {
                     players[turn].canPlay = false;
                     startNewTurn();
-                    
+
                 }
             }
         }
@@ -665,7 +665,7 @@ class BlokusWindow extends JFrame {
     //check for all player's canPlay values
     private boolean isGameOver() {
         // Comment out the three lines below to restore original functionality, this is to help the game end faster for testing
-        if (players[0].canPlay == false && players[1].canPlay == false && players[2].canPlay == false &&players[3].canPlay == false) {
+        if (players[0].canPlay == false && players[1].canPlay == false && players[2].canPlay == false && players[3].canPlay == false) {
             return true;
         }
         for (int i = 0; i < 4; i++) {

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 */
 class BlokusPlayer implements Serializable {
     public LinkedList<BlokusPiece> pieces;
+    public LinkedList<BlokusPiece> piecesPlayed;
     public boolean firstMove = true;
     public boolean canPlay = true;
 
@@ -29,7 +30,7 @@ class BlokusPlayer implements Serializable {
    */
     public int calculateScore() {
       int totalScores = 0;
-      for (BlokusPiece blokuspiece : pieces)
+      for (BlokusPiece blokuspiece : piecesPlayed)
       {
          totalScores = totalScores + blokuspiece.getScores();
       }
