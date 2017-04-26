@@ -10,12 +10,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import splashdemo.HighScores.SortableEntry;
 
 /**
-* <h1>BlokusWindow methods</h1>
-* @author  Nisha Chaube
-*/
+ * <h1>BlokusWindow methods</h1>
+ *
+ * @author Nisha Chaube
+ */
 class BlokusWindow extends JFrame {
+
     private final BlokusBoard board;
     private final BlokusPlayer[] players;
     private int turn = -1;
@@ -40,10 +45,10 @@ class BlokusWindow extends JFrame {
     private JMenuItem load;
 
     private boolean gameIsSaved;
-   
-   /**
-   * Default constructor that creates players and initializes the GUI.
-   */
+
+    /**
+     * Default constructor that creates players and initializes the GUI.
+     */
     public BlokusWindow() {
         super("Blokus");
         //player 0 and player 1 = human player
@@ -60,27 +65,39 @@ class BlokusWindow extends JFrame {
         startNewTurn();
     }
 
-   /**
-   * This is the saveGame method which saves the current game.
+    /**
+     * This is the saveGame method which saves the current game.
+     *
      * @param fileName
      * @throws FileNotFoundException
      * @throws IOException
-   */
+     */
     private void saveGame(String fileName) throws FileNotFoundException, IOException {
         FileOutputStream outFile = new FileOutputStream(fileName);
         ObjectOutputStream outStream = new ObjectOutputStream(outFile);
         for (BlokusPlayer player : players) {
             outStream.writeObject(player);
         }
-        board.saveGrid(outStream);
         outStream.writeInt(turn);
+
+        board.saveGrid(outStream);
     }
 
-   /**
-   * This is the loadGame method which loads the previously saved game.
+    private void saveHighScores(String fileName) {
+        try {
+            FileOutputStream outFile = new FileOutputStream(fileName);
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BlokusWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * This is the loadGame method which loads the previously saved game.
+     *
      * @param fileName
      * @throws IOException
-   */
+     */
     private void loadGame(String fileName) throws IOException {
         try {
             initializeGUI();
@@ -90,8 +107,11 @@ class BlokusWindow extends JFrame {
             players[1] = (BlokusPlayer) inStream.readObject();
             players[2] = (BlokusPlayer) inStream.readObject();
             players[3] = (BlokusPlayer) inStream.readObject();
-            board.loadGrid(inStream);
             this.turn = inStream.readInt();
+
+            board.loadGrid(inStream);
+            piecesPanel.repaint();
+
         } catch (ClassNotFoundException ex) {
             System.out.println("ClassNotFound exception thrown: " + ex.getMessage());
         } catch (FileNotFoundException ex) {
@@ -99,12 +119,14 @@ class BlokusWindow extends JFrame {
         }
 
     }
-    
-   /**
-   * This is the initializeGUI method which initializes the GUI by implementing various listeners.
-   */
+
+    /**
+     * This is the initializeGUI method which initializes the GUI by
+     * implementing various listeners.
+     */
     private void initializeGUI() {
-        class BoardClickListener implements MouseListener, MouseMotionListener{
+        class BoardClickListener implements MouseListener, MouseMotionListener {
+
             //overridden abstract methods
             public void mousePressed(MouseEvent e) {
             }
@@ -120,71 +142,74 @@ class BlokusWindow extends JFrame {
             public void mouseDragged(MouseEvent e) {
 
             }
-            
+
             public void mouseWheelMoved(MouseEvent e) {
             }
-            
 
             //flipping turns on mouse clicks
             public void mouseClicked(MouseEvent e) {
-                
-                  
-                    try {
-                        
-                        //if player turn
-                        if (turn == 0 || turn == 2) {
-                            //place block
-                            board.placePiece(players[turn].pieces.get(pieceIndex), selected.x - BlokusPiece.PIECESIZE / 2,
-                                    selected.y - BlokusPiece.PIECESIZE / 2, players[turn].firstMove);
-                            drawBoard();
-                            //remove piece
-                            players[turn].pieces.remove(pieceIndex);
-                            players[turn].firstMove = false;
-                            //if you use all your blocks quit
-                            players[turn].canPlay = !players[turn].pieces.isEmpty();
-                            startNewTurn();
-                            //if computer turn
-                        } else if (turn == 1 || turn == 3) {
-                            
-                            outerloop:
-                            //try 21 different random blocks
-                            for (int j=0; j <= 21; j++){
-                                 maxBlocks=players[turn].pieces.size();
-                                 int randomNum = ThreadLocalRandom.current().nextInt(0, maxBlocks);   
-                                for (int x = 0; x <= 19; x++) {
-                                    for (int y = 0; y <= 19; y++) {
-                                        try {
-                                            // try and place block on every square
-                                            board.placePiece(players[turn].pieces.get(randomNum), x - BlokusPiece.PIECESIZE/ 2, y - BlokusPiece.PIECESIZE/ 2,
+
+                try {
+
+                    //if player turn
+                    if (turn == 0 || turn == 2) {
+                        //place block
+                        if (board == null) {
+                            System.out.println("board is null");
+                        }
+                        BlokusPiece piece = (players[turn].pieces.get(pieceIndex));
+                        if (piece == null) {
+                            System.out.println("piece is null");
+
+                        }
+                        int selx = selected.x - BlokusPiece.PIECESIZE / 2;
+                        int sely = selected.y - BlokusPiece.PIECESIZE / 2;
+                        board.placePiece(players[turn].pieces.get(pieceIndex), selected.x - BlokusPiece.PIECESIZE / 2,
+                                selected.y - BlokusPiece.PIECESIZE / 2, players[turn].firstMove);
+                        drawBoard();
+                        //remove piece
+                        players[turn].pieces.remove(pieceIndex);
+                        players[turn].firstMove = false;
+                        //if you use all your blocks quit
+                        players[turn].canPlay = !players[turn].pieces.isEmpty();
+                        startNewTurn();
+                        //if computer turn
+                    } else if (turn == 1 || turn == 3) {
+
+                        outerloop:
+                        //try 21 different random blocks
+                        for (int j = 0; j <= 21; j++) {
+                            maxBlocks = players[turn].pieces.size();
+                            int randomNum = ThreadLocalRandom.current().nextInt(0, maxBlocks);
+                            for (int x = 0; x <= 19; x++) {
+                                for (int y = 0; y <= 19; y++) {
+                                    try {
+                                        // try and place block on every square
+                                        board.placePiece(players[turn].pieces.get(randomNum), x - BlokusPiece.PIECESIZE / 2, y - BlokusPiece.PIECESIZE / 2,
                                                 players[turn].firstMove);
-                                            drawBoard();
-                                            players[turn].pieces.remove(randomNum);
-                                            players[turn].firstMove = false;
-                                            players[turn].canPlay = !players[turn].pieces.isEmpty();
-                                            
-                                            
-                                      
-                                            break outerloop;
-                                            
-                                    }   catch (IllegalMoveException ex) {
+                                        drawBoard();
+                                        players[turn].pieces.remove(randomNum);
+                                        players[turn].firstMove = false;
+                                        players[turn].canPlay = !players[turn].pieces.isEmpty();
+
+                                        break outerloop;
+
+                                    } catch (IllegalMoveException ex) {
                                     }
                                 }
                             }
-                                // if computer has no move then quit
-                                if(j== 20)
-                                            {
-                                                players[turn].canPlay = false;
-                                            }
+                            // if computer has no move then quit
+                            if (j == 20) {
+                                players[turn].canPlay = false;
                             }
-                            
-                
-                            startNewTurn();
                         }
-                    } catch (IllegalMoveException ex) {
-                        displayMessage(ex.getMessage(), "Wrong Move!");
+
+                        startNewTurn();
                     }
-                  
-                
+                } catch (IllegalMoveException ex) {
+                    displayMessage(ex.getMessage(), "Wrong Move!");
+                }
+
             }
 
             public void mouseExited(MouseEvent e) {
@@ -205,48 +230,50 @@ class BlokusWindow extends JFrame {
             }
 
             /**
-            * This is the mouseWheelMoved method which rotates the piece clockwise or counterclockwise.
-              * @param e
-            */
-            
+             * This is the mouseWheelMoved method which rotates the piece
+             * clockwise or counterclockwise.
+             *
+             * @param e
+             */
         }
 
         class exitListener implements ActionListener {
+
             public void actionPerformed(ActionEvent event) {
                 players[turn].canPlay = false;
                 startNewTurn();
             }
         }
-        
+
         class rotateListener implements ActionListener {
+
             public void actionPerformed(ActionEvent event) {
                 if (turn == 0 || turn == 2) {
-                try {
+                    try {
                         rotateClockwise();
-                } catch (NullPointerException npe) {
-    // It's fine if findUser throws a NPE
-                }    
-                
+                    } catch (NullPointerException npe) {
+                        // It's fine if findUser throws a NPE
+                    }
+
                 }
             }
-            
-        
+
         }
-        
+
         class flipListener implements ActionListener {
+
             public void actionPerformed(ActionEvent event) {
                 if (turn == 0 || turn == 2) {
                     try {
                         flipPiece();
                     } catch (NullPointerException npe) {
-    // It's fine if findUser throws a NPE
-                }    
-                    
-                
+                        System.out.println("FlipListener caught: " + npe);
+                        // It's fine if findUser throws a NPE
+                    }
+
                 }
             }
-            
-        
+
         }
 
         mainPanel = new JPanel();
@@ -256,18 +283,18 @@ class BlokusWindow extends JFrame {
         //quit button for player
         exit = new JButton("Give Up");
         rotate = new JButton("Rotate");
-        flip =new JButton("Flip");
-  
-        piecesPanel.setLayout(new BoxLayout(piecesPanel, BoxLayout.PAGE_AXIS));        
+        flip = new JButton("Flip");
+
+        piecesPanel.setLayout(new BoxLayout(piecesPanel, BoxLayout.PAGE_AXIS));
         piecePanel.getVerticalScrollBar().setUnitIncrement(BlokusPiece.DEFAULTRESOLUTION);
         piecePanel.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION - 80, BlokusBoard.CONSOLERESOLUTION - 27));
 
         exit.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
         exit.addActionListener(new exitListener());
-        
+
         rotate.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
         rotate.addActionListener(new rotateListener());
-        
+
         flip.setPreferredSize(new Dimension(BlokusPiece.DEFAULTRESOLUTION, 20));
         flip.addActionListener(new flipListener());
 
@@ -305,7 +332,6 @@ class BlokusWindow extends JFrame {
         BoardClickListener bcl = new BoardClickListener();
         grid.addMouseListener(bcl);
         grid.addMouseMotionListener(bcl);
-        
 
         //add grid
         boardPanel.add(grid);
@@ -353,8 +379,8 @@ class BlokusWindow extends JFrame {
             try {
                 this.loadGame(openFile);
             } catch (IOException ex) {
-                System.out.print("Unable to open file: ");
-                System.out.print(ex.getCause());
+                System.out.print("Error reading file: ");
+                System.out.print(ex);
             }
         } else if (fileChooserResult == JFileChooser.CANCEL_OPTION) {
             System.out.println("Load operation cancelled");
@@ -368,8 +394,7 @@ class BlokusWindow extends JFrame {
     }
 
     private void rotateCounterClockwise() {
-        
-        
+
         players[turn].pieces.get(pieceIndex).rotateCounterClockwise();
         board.overlay(players[turn].pieces.get(pieceIndex), selected.x, selected.y);
         drawBoard();
@@ -406,12 +431,13 @@ class BlokusWindow extends JFrame {
 
     //to select peice type
     private class PieceLabelClickListener implements MouseListener {
+
         public void mouseClicked(MouseEvent e) {
-            if (turn == 0 || turn == 2){
-            BlokusPiecePanel bp = (BlokusPiecePanel) e.getComponent();
-            clearBorder();
-            pieceIndex = bp.pieceIndex;
-            drawBorder();
+            if (turn == 0 || turn == 2) {
+                BlokusPiecePanel bp = (BlokusPiecePanel) e.getComponent();
+                clearBorder();
+                pieceIndex = bp.pieceIndex;
+                drawBorder();
             }
         }
 
@@ -431,10 +457,10 @@ class BlokusWindow extends JFrame {
         public void mouseExited(MouseEvent e) {
 
         }
-        
+
         public void mouseWheelMoved(MouseEvent e) {
-            }
-            
+        }
+
     }
 
     //to flip turns
@@ -457,7 +483,11 @@ class BlokusWindow extends JFrame {
             piecesPanel.add(pieceLabel);
         }
         pieceIndex = 0;
-        drawBorder();
+        if (turn == 1 || turn == 3) {
+            clearBorder();
+        } else {
+            drawBorder();
+        }
         piecesPanel.repaint();
         pack();
     }
@@ -471,6 +501,16 @@ class BlokusWindow extends JFrame {
         }
         return true;
     }
+//    
+//    private SortableEntry getHighScore() {
+//        String maxPlayer = "";
+//        Integer maxScore = 0;
+//        for (int i = 0; i < this.players.length; i++) {
+//            if (players[i].calculateScore() > maxScore) {
+//                
+//            }
+//        }
+//    }
 
     //print score sheet of both players 
     private void gameFinish() {
