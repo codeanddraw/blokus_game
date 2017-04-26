@@ -19,6 +19,7 @@ class BlokusPlayer implements Serializable {
     public BlokusPlayer(int color) {
         int[][][] pieceShapes = BlokusPiece.getAllPieceShapes();
         pieces = new LinkedList<>();
+        piecesPlayed = new LinkedList<>();
         for (int[][]shape : pieceShapes) {
             pieces.add(new BlokusPiece(shape, color));
         }
