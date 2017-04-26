@@ -108,7 +108,7 @@ public class BlokusPiece implements Serializable {
         BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
         int cellSize = size / (PIECESIZE);
         Graphics2D img = (Graphics2D) image.getGraphics();
-        img.setColor(Color.WHITE);
+        img.setColor(Color.white);
         img.fillRect(0, 0, size, size);
         for (int x = 0; x < PIECESIZE; x++) {
             for (int y = 0; y < PIECESIZE; y++) {
