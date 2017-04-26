@@ -144,7 +144,38 @@ class BlokusWindow extends JFrame {
      * implementing various listeners.
      */
     private void initializeGUI() {
-        
+
+        class BoardKeyListener implements KeyListener {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // Unneeded
+            }
+
+            /**
+             * If a key is pressed while the window is in focus, rotate or flip piece.
+             * @param e key event representing key pressed
+             */
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (turn == 0 || turn == 2) {
+                    int keyCode = e.getKeyCode();
+                    if (keyCode == KeyEvent.VK_LEFT) {
+                        rotateCounterClockwise();
+                    } else if (keyCode == KeyEvent.VK_RIGHT) {
+                        rotateClockwise();
+                    } else if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_UP) {
+                        flipPiece();
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // Nothing happens
+            }
+        }
+
         class BoardClickListener implements MouseListener, MouseMotionListener {
 
             //overridden abstract methods
@@ -182,7 +213,7 @@ class BlokusWindow extends JFrame {
                             System.out.println("piece is null");
 
                         }
-                        int selx = selected.x - BlokusPiece.PIECESIZE / 2;
+                        int selx = selected.x - BlokusPiece.PIECESIZE / 2; // THIS IS CAUSING EXCEPTION
                         int sely = selected.y - BlokusPiece.PIECESIZE / 2;
                         board.placePiece(players[turn].pieces.get(pieceIndex), selected.x - BlokusPiece.PIECESIZE / 2,
                                 selected.y - BlokusPiece.PIECESIZE / 2, players[turn].firstMove);
@@ -364,7 +395,7 @@ class BlokusWindow extends JFrame {
         fileMenu.setText("File");
         save.setText("Save Current Game");
         load.setText("Load Previous Game");
-        
+
         save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
         load.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, 0));
 
@@ -379,8 +410,12 @@ class BlokusWindow extends JFrame {
 
         grid = new JLabel(boardImage);
         BoardClickListener bcl = new BoardClickListener();
+        BoardKeyListener bkl = new BoardKeyListener();
+        
         grid.addMouseListener(bcl);
         grid.addMouseMotionListener(bcl);
+        this.addKeyListener(bkl);
+        this.setFocusable(true);
 
         //add grid 
         boardPanel.add(grid);
@@ -399,8 +434,14 @@ class BlokusWindow extends JFrame {
         mainPanel.add(boardPanel);
         getContentPane().add(mainPanel);
         setVisible(true);
+        setFocusable(true);
     }
 
+    /**
+     * User picks where to save game, saves if possible.
+     *
+     * @param evt menu action event
+     */
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser saveDialogue = new JFileChooser();
         int fileChooserResult = saveDialogue.showSaveDialog(this);
@@ -423,6 +464,11 @@ class BlokusWindow extends JFrame {
         }
     }
 
+    /**
+     * User picks game to load, load if possible
+     *
+     * @param evt menu action event
+     */
     private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser openDialogue = new JFileChooser();
         int fileChooserResult = openDialogue.showOpenDialog(this);
@@ -436,12 +482,18 @@ class BlokusWindow extends JFrame {
         }
     }
 
+    /**
+     * Rotate piece clockwise.
+     */
     private void rotateClockwise() {
         players[turn].pieces.get(pieceIndex).rotateClockwise();
         board.overlay(players[turn].pieces.get(pieceIndex), selected.x, selected.y);
         drawBoard();
     }
 
+    /**
+     * Rotate piece counterclockwise.
+     */
     private void rotateCounterClockwise() {
 
         players[turn].pieces.get(pieceIndex).rotateCounterClockwise();
@@ -449,6 +501,9 @@ class BlokusWindow extends JFrame {
         drawBoard();
     }
 
+    /**
+     * Flip piece upside down.
+     */
     private void flipPiece() {
         players[turn].pieces.get(pieceIndex).flipOver();
         board.overlay(players[turn].pieces.get(pieceIndex), selected.x, selected.y);
