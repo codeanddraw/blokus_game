@@ -703,6 +703,27 @@ class BlokusWindow extends JFrame {
         stringContent.append("Yellow: ");
         stringContent.append(players[3].calculateScore());
         stringContent.append("\n");
+        
+        if((players[0].calculateScore()+players[2].calculateScore())>(players[1].calculateScore()+players[3].calculateScore())){
+            stringContent.append("Computer Wins\n"); 
+            if(players[1].calculateScore()>players[3].calculateScore()){
+               stringContent.append("*******Computer Player Yellow Wins**********"); 
+            }
+            else{
+                stringContent.append("*******Computer Player Green Wins**********"); 
+            }
+                
+        }
+        else{
+            stringContent.append("Player Wins\n");
+            if(players[0].calculateScore()>players[2].calculateScore()){
+               stringContent.append("*******Player Red Wins**********"); 
+            }
+            else{
+                stringContent.append("*******Player Blue Wins**********"); 
+            }
+        }
+        
         ImageIcon icon = new ImageIcon(BlokusWindow.class
                 .getResource("d2.gif"));
         JOptionPane.showMessageDialog(this, stringContent.toString(), "Game Over Now", JOptionPane.INFORMATION_MESSAGE, icon);
