@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import splashdemo.HighScores.SortableEntry;
+
 
 /**
  * <h1>BlokusWindow methods</h1>
@@ -703,7 +703,6 @@ class BlokusWindow extends JFrame {
         stringContent.append("Yellow: ");
         stringContent.append(players[3].calculateScore());
         stringContent.append("\n");
-        
         if((players[0].calculateScore()+players[2].calculateScore())>(players[1].calculateScore()+players[3].calculateScore())){
             stringContent.append("Computer Wins\n"); 
             if(players[1].calculateScore()>players[3].calculateScore()){
@@ -723,7 +722,6 @@ class BlokusWindow extends JFrame {
                 stringContent.append("*******Player Blue Wins**********"); 
             }
         }
-        
         ImageIcon icon = new ImageIcon(BlokusWindow.class
                 .getResource("d2.gif"));
         JOptionPane.showMessageDialog(this, stringContent.toString(), "Game Over Now", JOptionPane.INFORMATION_MESSAGE, icon);

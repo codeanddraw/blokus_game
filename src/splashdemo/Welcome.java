@@ -6,11 +6,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+
 
 /**
  * <h1>Welcome Screen</h1>
@@ -22,7 +21,7 @@ public class Welcome extends javax.swing.JFrame {
     public Welcome() {
         initComponents();
     }
-    static JFrame jf = new JFrame("Game");
+    static JFrame jf = new JFrame("Blokus Game");
     int x = 30, y = 510;
 
     public void paint(Graphics g) {
@@ -32,16 +31,7 @@ public class Welcome extends javax.swing.JFrame {
         g2.setFont(font);
         g2.setColor(Color.white);
         g2.drawString("Copyright cs205.2017: Nisha, David, Bill", x, y);
-//
-//        try {
-//            Thread.sleep(500); // Probably causing lag
-//        } catch (Exception ex) {
-//        }
-//        x += 10;
-//        if (x > this.getWidth()) {
-//            x = 0;
-//        }
-//        repaint();
+
     }
 
     /**
@@ -155,33 +145,17 @@ public class Welcome extends javax.swing.JFrame {
     private void startGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameButtonActionPerformed
         BlokusWindow run = new BlokusWindow();
         this.setVisible(false);
-        //jf.setVisible(true);
     }//GEN-LAST:event_startGameButtonActionPerformed
 
     private void howToPlayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_howToPlayButtonActionPerformed
-
-        try {
-            //to open a pdf of rules
-            File pdfFile = new File("C:/Users/Ayushi_chaubey/Desktop/soft final project/selected imgs/Blokus.pdf");
-            if (pdfFile.exists()) {
-
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(pdfFile);
-                } else {
-                    System.out.println("Awt Desktop is not supported!");
-                }
-
-            } else {
-                System.out.println("File doesn't exist!");
-            }
-
-            System.out.println("Done");
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+//opens a pdf of instructions
+        if (Desktop.isDesktopSupported()) 
+        try{
+        ClassLoader classLoader = getClass().getClassLoader();
+        File myFile = new File(classLoader.getResource("splashdemo/Blokus.pdf").getFile());
+        Desktop.getDesktop().open(myFile);
+        } catch (IOException ex) {
         }
-
-
     }//GEN-LAST:event_howToPlayButtonActionPerformed
 
 
